@@ -74,7 +74,7 @@ public class CloudButler {
 			public void run() {
 
 				try {
-					DbReader.getToken();
+					DbReader.getToken(processTrayIcon);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}

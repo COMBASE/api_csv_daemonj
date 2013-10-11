@@ -8,7 +8,7 @@ public class DBController {
 
 	private static final DBController dbcontroller = new DBController();
 	protected static Connection connection;
-	private static final String DB_PATH = "testdb.db";
+	private static final String DB_PATH = "butler.db";
 
 	static {
 		try {

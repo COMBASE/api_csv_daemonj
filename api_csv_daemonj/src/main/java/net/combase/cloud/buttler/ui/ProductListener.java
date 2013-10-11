@@ -19,6 +19,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import org.json.JSONObject;
 
+import net.combase.api.service.AbstractApiService;
 import net.combase.api.service.ProductApiService;
 import net.combase.cloud.buttler.api.ApiUtil;
 import net.combase.cloud.buttler.db.DbReader;
@@ -220,7 +221,7 @@ public class ProductListener implements KeyListener {
 			JSONObject result = postData.getJSONObject("result");
 			String name = result.get("name").toString();
 			JSONObject new_product = new JSONObject(postData.toString().replace(name, getTextField_name().getText()));
-			ApiUtil.postData(ApiUtil.KoronaApiUrl + ApiUtil.KoronaApiVersion + "/" + DbReader.getToken() + "/products/save/",
+			ApiUtil.postData(AbstractApiService.KoronaApiUrl + AbstractApiService.KoronaApiVersion + "/" + DbReader.getToken() + "/products/save/",
 					new_product.getJSONObject("result"));
 		} else {
 			if (getTextField_name().getText().length() == 0)
