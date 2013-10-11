@@ -1,39 +1,41 @@
 package net.combase.api.service;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.swing.text.StyledEditorKit.BoldAction;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import net.combase.api.domain.Product;
 
 public class ProductApiService extends AbstractApiService {
 
 	public static Product getByNumber(final String token, final Long number) {
-		JSONObject fetchByNumber = null;
+		JSONArray fetchByNumber = null;
 		try {
 			fetchByNumber = fetchByNumber(token, "products", number);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return formatOutput(fetchByNumber);
+		List<Product> formatOutputs = formatOutputs(fetchByNumber);
+		if (formatOutputs.size() > 0)
+			return formatOutputs.get(0);
+		return null;
 	}
 
 	public static Product getById(final String token, final String id) {
-		JSONObject fetchById = null;
+		JSONArray fetchById = null;
 		try {
 			fetchById = fetchById(token, "products", id);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return formatOutput(fetchById);
+		List<Product> formatOutputs = formatOutputs(fetchById);
+		if (formatOutputs.size() > 0)
+			return formatOutputs.get(0);
+		return null;
 	}
 
 	/**
@@ -47,20 +49,22 @@ public class ProductApiService extends AbstractApiService {
 	 * @throws JSONException
 	 * @throws IOException
 	 */
-	public static Product formatOutput(JSONObject result) {
-		Product ret = new Product();
+	public static List<Product> formatOutputs(JSONArray result) {
+		List<Product> ret = new ArrayList<Product>();
+		
 		try {
-			ret.setName(result.get("name").toString());
-			ret.setRevision(Long.valueOf(result.get("revision").toString())
-					.longValue());
-			ret.setDiscountable(Boolean.valueOf(result.get("discountable")
-					.toString()));
-			ret.setPriceChangable(Boolean.valueOf(
-					result.get("priceChangable").toString()).booleanValue());
-			ret.setDeleted(Boolean.valueOf(result.get("deleted").toString())
-					.booleanValue());
-			ret.setCommodityGroup(result.get("commodityGroup").toString());
-			ret.setSector(result.get("sector").toString());
+			Product product = new Product();
+//			ret.setName(result.get("name").toString());
+//			ret.setRevision(Long.valueOf(result.get("revision").toString())
+//					.longValue());
+//			ret.setDiscountable(Boolean.valueOf(result.get("discountable")
+//					.toString()));
+//			ret.setPriceChangable(Boolean.valueOf(
+//					result.get("priceChangable").toString()).booleanValue());
+//			ret.setDeleted(Boolean.valueOf(result.get("deleted").toString())
+//					.booleanValue());
+//			ret.setCommodityGroup(result.get("commodityGroup").toString());
+//			ret.setSector(result.get("sector").toString());
 
 			// if (result.has("prices")) // nicht jedes Produkt besitzt einen
 			// Preis

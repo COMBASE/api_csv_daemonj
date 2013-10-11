@@ -75,7 +75,7 @@ public class ProductListener implements KeyListener {
 
 		frmShowProduct.setTitle("Show Product");
 		frmShowProduct.setBounds(100, 100, 450, 300);
-		frmShowProduct.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frmShowProduct.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		textField_nr.setColumns(10);
 
 		JLabel lblProductkey = new JLabel("Productnr:");

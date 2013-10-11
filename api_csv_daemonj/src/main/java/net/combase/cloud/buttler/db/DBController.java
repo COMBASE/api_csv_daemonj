@@ -73,10 +73,12 @@ public class DBController {
 
 				token = rs.getString("token");
 			}
-			if (token == null)
+			if (token == null) {
 				token = ApiUtil.generateToken();
-			if (token != null && !token.equals(""))
-				stmt.execute("INSERT INTO token (token) VALUES ('" + token + "')");
+				if (token != null && !token.equals(""))
+					stmt.execute("INSERT INTO token (token) VALUES ('" + token
+							+ "')");
+			}
 			return token;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -105,7 +107,8 @@ public class DBController {
 			stmt.executeUpdate("CREATE TABLE books (author, title, publication, pages, price);");
 			stmt.execute("INSERT INTO books (author, title, publication, pages, price) VALUES ('Paulchen Paule', 'Paul der Penner', '2001-05-06', '1234', '5.67')");
 
-			PreparedStatement ps = connection.prepareStatement("INSERT INTO books VALUES (?, ?, ?, ?, ?);");
+			PreparedStatement ps = connection
+					.prepareStatement("INSERT INTO books VALUES (?, ?, ?, ?, ?);");
 
 			ps.setString(1, "Willi Winzig");
 			ps.setString(2, "Willi's Wille");
@@ -129,7 +132,8 @@ public class DBController {
 			while (rs.next()) {
 				System.out.println("Autor = " + rs.getString("author"));
 				System.out.println("Titel = " + rs.getString("title"));
-				System.out.println("Erscheinungsdatum = " + rs.getDate("publication"));
+				System.out.println("Erscheinungsdatum = "
+						+ rs.getDate("publication"));
 				System.out.println("Seiten = " + rs.getInt("pages"));
 				System.out.println("Preis = " + rs.getDouble("price"));
 			}

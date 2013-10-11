@@ -14,13 +14,15 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AbstractApiService {
+	// public final static String KoronaApiUrl = new String(
+	// "https://www.koronacloud.com/web/api/");
 	public final static String KoronaApiUrl = new String(
-			"https://www.koronacloud.com/web/api/"); // unbedingt mit Slash
-														// schliessen
+			"http://10.0.0.201:8080/web/api/");
 	public final static String KoronaApiVersion = new String("v1");
 
 	/**
@@ -34,25 +36,49 @@ public class AbstractApiService {
 	 * @throws IOException
 	 */
 
-	public static JSONObject fetchByNumber(final String token,
+	public static JSONArray fetchByNumber(final String token,
 			final String objType, final Long number) throws IOException {
 
 		String url = KoronaApiUrl + KoronaApiVersion + "/" + token + "/"
 				+ objType + "/number/" + number;
 		String obj = fetchData(url).toString();
 		JSONObject jsonObject = new JSONObject(obj);
-		if(jsonObject != null && jsonObject.has("result"))
-			jsonObject = jsonObject.getJSONObject("result");
-		return jsonObject;
+		JSONArray results = new JSONArray();
+		if (jsonObject != null && jsonObject.has("result")) {
+			results.put(jsonObject.getJSONObject("result"));
+		}
+		return results;
 	}
 
-	public static JSONObject fetchById(final String token,
-			final String objType, final String id) throws IOException {
+
+
+	public static JSONArray fetchByCustomerGroup(final String token,
+			final String objType, final Long number) throws IOException {
+
+		String url = KoronaApiUrl + KoronaApiVersion + "/" + token + "/"
+				+ objType + "/customergroup/" + number;
+		String obj = fetchData(url).toString();
+		JSONArray results = new JSONArray();
+		JSONObject jsonObject = new JSONObject(obj);
+		if (jsonObject != null && jsonObject.has("result")) {
+			results.put(jsonObject.getJSONObject("result"));
+			return results;
+		}
+		if (jsonObject != null && jsonObject.has("resultList"))
+			results = jsonObject.getJSONArray("resultList");
+		return results;
+	}
+
+	public static JSONArray fetchById(final String token, final String objType,
+			final String id) throws IOException {
 		String url = KoronaApiUrl + KoronaApiVersion + "/" + token + "/"
 				+ objType + "/id/" + id;
 		String obj = fetchData(url).toString();
 		JSONObject jsonObject = new JSONObject(obj);
-		return jsonObject;
+		JSONArray results = new JSONArray();
+		if (jsonObject != null && jsonObject.has("result"))
+			results = jsonObject.getJSONArray("result");
+		return results;
 	}
 
 	/**
@@ -64,7 +90,7 @@ public class AbstractApiService {
 	 *         zu finden war
 	 * @throws IOException
 	 */
-	private static StringBuffer fetchData(String url) throws IOException {
+	protected static StringBuffer fetchData(String url) throws IOException {
 		URL obj = new URL(url);
 		URLConnection con;
 		if (url.startsWith("https")) {
@@ -133,34 +159,37 @@ public class AbstractApiService {
 		public void checkServerTrusted(X509Certificate[] certs, String authType) {
 		}
 	} };
-	
+
 	/**
-	 * Diese Methode prüft ob die Referenz (zB.: "name" oder "Revision") gültig ist und falls ja
-	 * generiert es eine Ausgabezeile daraus
-	 *
-	 * @param titel Der Zeilenname
-	 * @param referenz die Referenz im JSON-Objekt
-	 * @param obj das zu untersuchende JSON-Objekt
+	 * Diese Methode prüft ob die Referenz (zB.: "name" oder "Revision") gültig
+	 * ist und falls ja generiert es eine Ausgabezeile daraus
+	 * 
+	 * @param titel
+	 *            Der Zeilenname
+	 * @param referenz
+	 *            die Referenz im JSON-Objekt
+	 * @param obj
+	 *            das zu untersuchende JSON-Objekt
 	 * @return Ausgabe wie: Produktname: Coca Cola
 	 * @throws JSONException
 	 * @throws IOException
 	 */
-	protected static String getStringOutputLine(String titel, String referenz, JSONObject obj)
-		throws JSONException, IOException
-	{
-		if (obj.has(referenz))
-		{
-			if (obj.get(referenz).toString().length() < 35)
-			{
+	protected static String getStringOutputLine(String titel, String referenz,
+			JSONObject obj) throws JSONException, IOException {
+		if (obj.has(referenz)) {
+			if (obj.get(referenz).toString().length() < 35) {
 				return titel + ": " + obj.get(referenz) + "\n";
-			}
-			else
-			{
-//				JSONObject childobj = fetchObject(referenz + "s", obj.get(referenz).toString());
-//				JSONObject result = childobj.getJSONObject("result");
-//				return getStringOutputLine(titel, "name", result);
+			} else {
+				// JSONObject childobj = fetchObject(referenz + "s",
+				// obj.get(referenz).toString());
+				// JSONObject result = childobj.getJSONObject("result");
+				// return getStringOutputLine(titel, "name", result);
 			}
 		}
 		return null;
+	}
+
+	protected static Boolean toBool(final Object object) {
+		return Boolean.valueOf(object.toString());
 	}
 }
