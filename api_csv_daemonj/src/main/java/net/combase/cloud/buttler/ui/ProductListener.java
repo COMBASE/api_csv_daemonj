@@ -19,6 +19,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import org.json.JSONObject;
 
+import net.combase.api.domain.Product;
+import net.combase.api.service.ProductApiService;
 import net.combase.cloud.buttler.CloudButler;
 import net.combase.cloud.buttler.api.ApiUtil;
 import net.combase.cloud.buttler.db.DBController;
@@ -240,6 +242,9 @@ public class ProductListener implements KeyListener {
 	public static void requestProduct() throws IOException {
 		if (getTextField().getText().length() > 0 && getTextField().getText().matches("[0-9]+")) {
 			getTextArea().setText(ApiUtil.formatOutput(ApiUtil.fetchObject("products", getTextField().getText())));
+			
+			 Product productByNumber = ProductApiService.getByNumber(DBController.getToken(), Long.valueOf(getTextField().getText()));
+			
 			System.out.println(ApiUtil.fetchObject("products", getTextField().getText()));
 		} else {
 			if (getTextField().getText() == null)

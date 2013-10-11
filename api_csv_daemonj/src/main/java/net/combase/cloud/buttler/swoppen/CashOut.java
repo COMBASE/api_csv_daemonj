@@ -32,7 +32,7 @@ public class CashOut {
 				// $s->{tax} = sprintf "%.0f,00",
 				final BigDecimal subtract = sale.getGrossItemPrice().subtract(sale.getNetItemPrice());
 				final BigDecimal grossItemPrice = subtract.divide((sale.getNetItemPrice().divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP)), 2, BigDecimal.ROUND_HALF_UP);
-				line.append(cashier.getFirstName());
+				line.append(cashier.getFirstname());
 				line.append(currency.getSymbol());
 				line.append(grossItemPrice);
 				line.append(sale.getNetItemPrice());
