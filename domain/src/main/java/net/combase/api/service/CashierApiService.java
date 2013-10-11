@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.combase.api.domain.Cashier;
-import net.combase.api.domain.Receipt;
 
 public class CashierApiService extends AbstractApiService {
 

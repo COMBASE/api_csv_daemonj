@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.swing.*;
 
 import net.combase.cloud.buttler.db.DBController;
+import net.combase.cloud.buttler.db.DbReader;
 
 /**
  *
@@ -73,7 +74,7 @@ public class CloudButler {
 			public void run() {
 
 				try {
-					DBController.generateToken();
+					DbReader.getToken();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}

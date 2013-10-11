@@ -117,22 +117,6 @@ public class AbstractApiService {
 		return response;
 	}
 
-	/**
-	 * isID prüft einen String ob es sich um eine ID handelt oder Nummer
-	 * 
-	 * @param s
-	 *            der Eingabestring
-	 * @return true falls ID, false fals Nummer
-	 */
-	private static boolean isID(String s) {
-		try {
-			Integer.parseInt(s);
-		} catch (NumberFormatException e) {
-			return true;
-		}
-		return false;
-	}
-
 	private static void setupConnection() {
 		// im Folgenden werden wir unsere sehr schwache SecurityPolicy von oben
 		// auf unsere Httpsconnection an

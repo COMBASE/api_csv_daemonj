@@ -13,7 +13,7 @@ import net.combase.api.service.CashierApiService;
 import net.combase.api.service.CurrencyApiService;
 import net.combase.api.service.ReceiptApiService;
 import net.combase.api.service.SaleApiService;
-import net.combase.cloud.buttler.db.DBController;
+import net.combase.cloud.buttler.db.DbReader;
 
 public class CashOut {
 	public class ReceiptSaleSummaryBean {
@@ -78,16 +78,16 @@ public class CashOut {
 		StringBuilder line = new StringBuilder();
 		try {
 			final Currency currency = CurrencyApiService.getByNumber(
-					DBController.getToken(), Long.valueOf(1));
+					DbReader.getToken(), Long.valueOf(1));
 			for (Receipt receipt : receipts) {
 				if (receipt.getRevision() > maxRevision)
 					maxRevision = receipt.getRevision();
 
 				List<Sale> sales = SaleApiService.getAllFromReceipt(
-						DBController.getToken(), receipt.getUuid());
+						DbReader.getToken(), receipt.getUuid());
 				for (Sale sale : sales) {
 					Cashier cashier = CashierApiService.getByNumber(
-							DBController.getToken(),
+							DbReader.getToken(),
 							Long.valueOf(sale.getCashier()));
 					line.append(receipt.getCustomer());// Customer number
 					line.append(receipt.getNumber());// receipt number
@@ -122,10 +122,10 @@ public class CashOut {
 		List<Receipt> receipts = null;
 		Currency currency = null;
 		try {
-			currency = CurrencyApiService.getByNumber(DBController.getToken(),
+			currency = CurrencyApiService.getByNumber(DbReader.getToken(),
 					Long.valueOf(1));
 			receipts = ReceiptApiService.getPageByCustomerGroup(
-					DBController.getToken(), Long.valueOf(123456));
+					DbReader.getToken(), Long.valueOf(123456));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -135,10 +135,10 @@ public class CashOut {
 
 				try {
 					List<Sale> sales = SaleApiService.getAllFromReceipt(
-							DBController.getToken(), receipt.getUuid());
+							DbReader.getToken(), receipt.getUuid());
 					for (Sale sale : sales) {
 						Cashier cashier = CashierApiService.getByNumber(
-								DBController.getToken(),
+								DbReader.getToken(),
 								Long.valueOf(sale.getCashier()));
 						ret.add(new ReceiptSaleSummaryBean("", "", currency,
 								receipt, cashier, sale));

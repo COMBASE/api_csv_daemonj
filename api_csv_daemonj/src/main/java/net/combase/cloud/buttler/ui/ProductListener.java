@@ -19,11 +19,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import org.json.JSONObject;
 
-import net.combase.api.domain.Product;
 import net.combase.api.service.ProductApiService;
-import net.combase.cloud.buttler.CloudButler;
 import net.combase.cloud.buttler.api.ApiUtil;
-import net.combase.cloud.buttler.db.DBController;
+import net.combase.cloud.buttler.db.DbReader;
 
 /**
  * Diese Klasse ist für die Oberfläche verantwortlich
@@ -222,7 +220,7 @@ public class ProductListener implements KeyListener {
 			JSONObject result = postData.getJSONObject("result");
 			String name = result.get("name").toString();
 			JSONObject new_product = new JSONObject(postData.toString().replace(name, getTextField_name().getText()));
-			ApiUtil.postData(ApiUtil.KoronaApiUrl + ApiUtil.KoronaApiVersion + "/" + DBController.getToken() + "/products/save/",
+			ApiUtil.postData(ApiUtil.KoronaApiUrl + ApiUtil.KoronaApiVersion + "/" + DbReader.getToken() + "/products/save/",
 					new_product.getJSONObject("result"));
 		} else {
 			if (getTextField_name().getText().length() == 0)
@@ -243,7 +241,7 @@ public class ProductListener implements KeyListener {
 		if (getTextField().getText().length() > 0 && getTextField().getText().matches("[0-9]+")) {
 			getTextArea().setText(ApiUtil.formatOutput(ApiUtil.fetchObject("products", getTextField().getText())));
 			
-			 Product productByNumber = ProductApiService.getByNumber(DBController.getToken(), Long.valueOf(getTextField().getText()));
+			ProductApiService.getByNumber(DbReader.getToken(), Long.valueOf(getTextField().getText()));
 			
 			System.out.println(ApiUtil.fetchObject("products", getTextField().getText()));
 		} else {

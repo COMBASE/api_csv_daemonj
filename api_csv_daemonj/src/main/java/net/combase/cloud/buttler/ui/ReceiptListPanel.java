@@ -1,47 +1,21 @@
 package net.combase.cloud.buttler.ui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-import org.json.JSONObject;
-
-import net.combase.api.domain.Product;
-import net.combase.api.domain.Receipt;
-import net.combase.api.service.ProductApiService;
-import net.combase.cloud.buttler.CloudButler;
-import net.combase.cloud.buttler.api.ApiUtil;
-import net.combase.cloud.buttler.db.DBController;
 import net.combase.cloud.buttler.swoppen.CashIn;
 import net.combase.cloud.buttler.swoppen.CashOut;
 import net.combase.cloud.buttler.swoppen.CashOut.ReceiptSaleSummaryBean;
-import net.combase.cloud.buttler.ui.ReceiptListPanel.CurrencyTableModel;
 
 /**
  * 
@@ -112,7 +86,7 @@ public class ReceiptListPanel extends JFrame {
 			return object;
 		}
 
-		public Class getColumnClass(int column) {
+		public Class<?> getColumnClass(int column) {
 			Object object = data[0][column];
 			if (object == null)
 				return String.class;
@@ -125,6 +99,8 @@ public class ReceiptListPanel extends JFrame {
 	}
 
 	class FractionCellRenderer extends DefaultTableCellRenderer {
+		private static final long serialVersionUID = -9154181659865486307L;
+
 		public FractionCellRenderer(int integer, int fraction, int align) {
 			this.integer = integer; // maximum integer digits
 			this.fraction = fraction; // exact number of fraction digits

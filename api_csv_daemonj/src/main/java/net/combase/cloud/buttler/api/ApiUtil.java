@@ -18,8 +18,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import net.combase.cloud.buttler.CloudButler;
-import net.combase.cloud.buttler.db.DBController;
+import net.combase.cloud.buttler.db.DbReader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -145,7 +144,7 @@ public class ApiUtil {
 		{
 			indicator = "number";
 		}
-		String url = KoronaApiUrl + KoronaApiVersion + "/" + DBController.getToken() + "/" + objType + "/" +indicator + "/" + referenz;
+		String url = KoronaApiUrl + KoronaApiVersion + "/" + DbReader.getToken() + "/" + objType + "/" +indicator + "/" + referenz;
 		String obj = ApiUtil.fetchData(url).toString();
 		return new JSONObject(obj);
 	}
