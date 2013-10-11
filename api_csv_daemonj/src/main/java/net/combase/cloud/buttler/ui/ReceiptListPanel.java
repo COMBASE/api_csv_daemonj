@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -70,8 +71,19 @@ public class ReceiptListPanel extends JFrame {
 			data = new Object[cashOutData.size()][12];
 			for (int i = 0; i < data.length; i++) {
 				data[i][0] = "123456";
-				data[i][1] = "";// $_->{date}";
-				data[i][2] = "";// $_->{time};
+				final Date date = cashOutData.get(i).getSale().getBookingTime();
+
+				if (date != null) {
+					final SimpleDateFormat dateFormat = new SimpleDateFormat(
+							"dd.MM.yyyy");
+					final SimpleDateFormat timeFormat = new SimpleDateFormat(
+							"HH:mm:ss");
+
+					final String dateString = dateFormat.format(date);
+					final String timeString = timeFormat.format(date);
+					data[i][1] = dateString;// $_->{date}";
+					data[i][2] = timeString;// $_->{time};
+				}
 				data[i][3] = cashOutData.get(i).getReceipt().getNumber();
 				data[i][4] = cashOutData.get(i).getSale().getQuantity();
 				data[i][5] = cashOutData.get(i).getSale().getArticle();
@@ -152,7 +164,7 @@ public class ReceiptListPanel extends JFrame {
 		tcm.getColumn(0).setPreferredWidth(300);
 		tcm.getColumn(0).setMinWidth(300);
 
-		tbl.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tbl.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		tbl.setPreferredScrollableViewportSize(tbl.getPreferredSize());
 
 		JScrollPane sp = new JScrollPane(tbl);
