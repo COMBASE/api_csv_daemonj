@@ -1,14 +1,33 @@
 package net.combase.api.domain;
+
+
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
- *
- * @author mziescha
- *
+ * 
+ * @author Mario Zieschang
+ * 
  */
-public class CustomerGroup  extends AbstractDomainRootAndNumberObject {
+@XmlRootElement
+public class CustomerGroup extends AbstractRootAndNumberDataObject
+{
+	private static final long serialVersionUID = 2888535513727094872L;
+
+	private String priceGroup;
 
 	/**
-	 *
+	 * @return the priceGroup
 	 */
-	private static final long serialVersionUID = -6184610267180362836L;
+	public String getPriceGroup()
+	{
+		return priceGroup;
+	}
 
+	/**
+	 * @param priceGroup the priceGroup to set
+	 */
+	public void setPriceGroup(String priceGroup)
+	{
+		this.priceGroup = priceGroup;
+	}
 }
