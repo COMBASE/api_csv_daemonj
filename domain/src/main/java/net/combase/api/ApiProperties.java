@@ -18,6 +18,9 @@ public class ApiProperties {
 	private String token;
 	private String protocol;
 	private String cloudUrl;
+	private String cashin;
+	private String cashout;
+	private int timeOut;
 
 	protected ApiProperties() {
 		try {
@@ -31,6 +34,11 @@ public class ApiProperties {
 			cloudUrl = props.getProperty("url");
 			version = props.getProperty("version");
 			protocol = props.getProperty("protocol");
+			timeOut = Integer.valueOf(props.getProperty("timeOut")).intValue();
+
+			cashin = props.getProperty("cashin");
+			cashout = props.getProperty("cashout");
+
 			if (protocol == null || !protocol.equals("http") && !protocol.equals("https"))
 				protocol = "https";
 			StringBuilder sb = new StringBuilder();
@@ -114,5 +122,17 @@ public class ApiProperties {
 	public void setToken(String token) {
 		this.token = token;
 		url = url + token + "/";
+	}
+
+	public String getCashin() {
+		return cashin;
+	}
+
+	public String getCashout() {
+		return cashout;
+	}
+
+	public int getTimeOut() {
+		return timeOut*1000;
 	}
 }

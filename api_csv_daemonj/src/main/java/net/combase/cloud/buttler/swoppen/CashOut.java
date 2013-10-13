@@ -1,5 +1,6 @@
 package net.combase.cloud.buttler.swoppen;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -151,5 +152,10 @@ public class CashOut {
 			}
 		}
 		return ret;
+	}
+
+	public static void writeFolder(File file) {
+		// TODO Auto-generated method stub
+		
 	}
 }

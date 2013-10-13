@@ -10,11 +10,12 @@ import javax.swing.*;
 import net.combase.api.ApiProperties;
 import net.combase.cloud.buttler.db.DBController;
 import net.combase.cloud.buttler.db.DbReader;
+import net.combase.cloud.buttler.swoppen.Swoppen;
 
 /**
- *
+ * 
  * @author mziescha
- *
+ * 
  */
 
 public class CloudButler {
@@ -24,10 +25,11 @@ public class CloudButler {
 	private static final String TOOL_TIP = "Mindfire Tool Tip";
 
 	private static DBController dbc;
+
 	public static void main(String[] args) {
 		dbc = DBController.getInstance();
 		dbc.initDBConnection();
-//		dbc.handleDB();
+		// dbc.handleDB();
 		try {
 			CloudButler systemTrayExample = new CloudButler();
 			systemTrayExample.createAndAddApplicationToSystemTray();
@@ -85,18 +87,14 @@ public class CloudButler {
 
 				while (true) {
 					try {
-						Thread.sleep(10000);
+						Thread.sleep(ApiProperties.get().getTimeOut());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					// processTrayIcon.displayMessage("Mindfire Process Message",
-					// "This is message number ",
-					// TrayIcon.MessageType.INFO);
+					Swoppen.doRun(ApiProperties.get().getCashin(), ApiProperties.get().getCashout());
 				}
-
 			}
 		});
-
 		thread.start();
 	}
 }
