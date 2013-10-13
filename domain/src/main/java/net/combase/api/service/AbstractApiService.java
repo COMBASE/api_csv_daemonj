@@ -14,16 +14,13 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import net.combase.api.ApiProperties;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AbstractApiService {
-	// public final static String KoronaApiUrl = new String(
-	// "https://www.koronacloud.com/web/api/");
-	public final static String KoronaApiUrl = new String(
-			"http://10.0.0.201:8080/web/api/");
-	public final static String KoronaApiVersion = new String("v1");
 
 	/**
 	 * fetchObject zieht das gesuchte Object anhand
@@ -36,11 +33,10 @@ public class AbstractApiService {
 	 * @throws IOException
 	 */
 
-	public static JSONArray fetchByNumber(final String token,
-			final String objType, final Long number) throws IOException {
+	public static JSONArray fetchByNumber(final String token, final String objType, final Long number)
+			throws IOException {
 
-		String url = KoronaApiUrl + KoronaApiVersion + "/" + token + "/"
-				+ objType + "/number/" + number;
+		String url = ApiProperties.get().getUrl() + objType + "/number/" + number;
 		String obj = fetchData(url).toString();
 		JSONObject jsonObject = new JSONObject(obj);
 		JSONArray results = new JSONArray();
@@ -50,13 +46,10 @@ public class AbstractApiService {
 		return results;
 	}
 
+	public static JSONArray fetchByCustomerGroup(final String token, final String objType, final Long number)
+			throws IOException {
 
-
-	public static JSONArray fetchByCustomerGroup(final String token,
-			final String objType, final Long number) throws IOException {
-
-		String url = KoronaApiUrl + KoronaApiVersion + "/" + token + "/"
-				+ objType + "/customergroup/" + number;
+		String url = ApiProperties.get().getUrl() + objType + "/customergroup/" + number;
 		String obj = fetchData(url).toString();
 		JSONArray results = new JSONArray();
 		JSONObject jsonObject = new JSONObject(obj);
@@ -69,10 +62,8 @@ public class AbstractApiService {
 		return results;
 	}
 
-	public static JSONArray fetchById(final String token, final String objType,
-			final String id) throws IOException {
-		String url = KoronaApiUrl + KoronaApiVersion + "/" + token + "/"
-				+ objType + "/id/" + id;
+	public static JSONArray fetchById(final String token, final String objType, final String id) throws IOException {
+		String url = ApiProperties.get().getUrl() + objType + "/id/" + id;
 		String obj = fetchData(url).toString();
 		JSONObject jsonObject = new JSONObject(obj);
 		JSONArray results = new JSONArray();
@@ -104,8 +95,12 @@ public class AbstractApiService {
 															// Connection zum
 															// Server
 		}
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				con.getInputStream())); // kopiert die Daten in einen Buffer
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream())); // kopiert
+																								// die
+																								// Daten
+																								// in
+																								// einen
+																								// Buffer
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 		// die folgende Schleife liest den Buffered Reader den wir oben gefüllt
@@ -123,8 +118,7 @@ public class AbstractApiService {
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
 			sc.init(null, trustAllCerts, new SecureRandom());
-			HttpsURLConnection
-					.setDefaultSSLSocketFactory(sc.getSocketFactory());
+			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -158,8 +152,8 @@ public class AbstractApiService {
 	 * @throws JSONException
 	 * @throws IOException
 	 */
-	protected static String getStringOutputLine(String titel, String referenz,
-			JSONObject obj) throws JSONException, IOException {
+	protected static String getStringOutputLine(String titel, String referenz, JSONObject obj) throws JSONException,
+			IOException {
 		if (obj.has(referenz)) {
 			if (obj.get(referenz).toString().length() < 35) {
 				return titel + ": " + obj.get(referenz) + "\n";

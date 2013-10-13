@@ -58,14 +58,12 @@ public class TrayMenu extends PopupMenu {
 			productUiItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						Dimension dimension = Toolkit.getDefaultToolkit()
-								.getScreenSize(); // Screensize bestimmen
+						Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); // Screensize
+																							// bestimmen
 						ProductListener window = new ProductListener(); // MainWindow
 																		// erstellen
-						int x = (int) ((dimension.getWidth() - window
-								.getFrmShowProduct().getWidth()) / 2);
-						int y = (int) ((dimension.getHeight() - window
-								.getFrmShowProduct().getHeight()) / 2);
+						int x = (int) ((dimension.getWidth() - window.getFrmShowProduct().getWidth()) / 2);
+						int y = (int) ((dimension.getHeight() - window.getFrmShowProduct().getHeight()) / 2);
 						window.getFrmShowProduct().setVisible(true); // Fenster
 						// sichtbar
 						// machen
@@ -86,12 +84,11 @@ public class TrayMenu extends PopupMenu {
 		if (receiptUiItem == null) {
 			receiptUiItem = new MenuItem("Show Receipt Panel");
 			receiptUiItem.addActionListener(new ActionListener() {
-				private ReceiptListPanel window;
 
 				public void actionPerformed(ActionEvent e) {
 					try {
-						window = new ReceiptListPanel(); 
-						
+						new ReceiptListPanel();
+
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
@@ -146,20 +143,14 @@ public class TrayMenu extends PopupMenu {
 					MenuItem item = (MenuItem) e.getSource();
 					System.out.println(item.getLabel());
 					if ("Error".equals(item.getLabel())) {
-						trayIcon.displayMessage(MESSAGE_HEADER,
-								"This is an error message",
-								TrayIcon.MessageType.ERROR);
+						trayIcon.displayMessage(MESSAGE_HEADER, "This is an error message", TrayIcon.MessageType.ERROR);
 					} else if ("Warning".equals(item.getLabel())) {
-						trayIcon.displayMessage(MESSAGE_HEADER,
-								"This is a warning message",
+						trayIcon.displayMessage(MESSAGE_HEADER, "This is a warning message",
 								TrayIcon.MessageType.WARNING);
 					} else if ("Info".equals(item.getLabel())) {
-						trayIcon.displayMessage(MESSAGE_HEADER,
-								"This is an info message",
-								TrayIcon.MessageType.INFO);
+						trayIcon.displayMessage(MESSAGE_HEADER, "This is an info message", TrayIcon.MessageType.INFO);
 					} else if ("None".equals(item.getLabel())) {
-						trayIcon.displayMessage(MESSAGE_HEADER,
-								"This is an ordinary message",
+						trayIcon.displayMessage(MESSAGE_HEADER, "This is an ordinary message",
 								TrayIcon.MessageType.NONE);
 					}
 				}
@@ -187,8 +178,7 @@ public class TrayMenu extends PopupMenu {
 			aboutItem = new MenuItem("Tray Info");
 			aboutItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(null,
-							"This dialog is all about system tray program");
+					JOptionPane.showMessageDialog(null, "This dialog is all about system tray program");
 				}
 			});
 		}

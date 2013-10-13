@@ -1,9 +1,7 @@
-package net.combase.cloud.buttler.api;
+package net.combase.api.service;
 
 import java.awt.TrayIcon;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,10 +19,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import net.combase.api.service.AbstractApiService;
-import net.combase.cloud.buttler.db.DbReader;
-import net.combase.cloud.buttler.db.DbWriter;
-import net.combase.cloud.buttler.db.domain.Token;
+import net.combase.api.ApiProperties;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,16 +33,6 @@ import org.json.JSONObject;
  * 
  */
 public class ApiUtil {
-	// AppID, AppSecret und Apikey dienen zur Generierung des Tokens,
-	// welches uns wiederum Data-Access auf die Cloud-Daten gewährt
-	private final static String AppID = new String(
-			"df278de3-0df8-4992-9c72-495a9857c1a4");
-	private final static String AppSecret = new String("lcfy");
-	private final static String ApiKey = new String(
-			"5f9300ee-91e8-4920-a6e4-1b0e62b82fe5");
-
-	// public final static String KoronaApiUrl = new String(
-	// "https://www.koronacloud.com/web/api/");
 
 	/**
 	 * formatOutput sorgt für die Formatierung der erstellten Produktdaten, die
@@ -70,26 +55,20 @@ public class ApiUtil {
 			ausgabe = getStringOutputLine("Produktname", "name", result)
 					+ getStringOutputLine("Revision", "revision", result)
 					+ getStringOutputLine("Rabattfähig", "discountable", result)
-					+ getStringOutputLine("Preisänderbarkeit",
-							"priceChangable", result)
+					+ getStringOutputLine("Preisänderbarkeit", "priceChangable", result)
 					+ getStringOutputLine("Gelöscht", "deleted", result)
 					+ getStringOutputLine("Type", "@xsi.type", result)
-					+ getStringOutputLine("Warengruppe", "commodityGroup",
-							result)
+					+ getStringOutputLine("Warengruppe", "commodityGroup", result)
 					+ getStringOutputLine("Sektor", "sector", result);
 
 			if (result.has("prices")) // nicht jedes Produkt besitzt einen Preis
 			{ // und falls kann es ein einzelner Preis oder eine Preisliste sein
 				Object price = result.get("prices");
 				if (price instanceof JSONObject) {
-					ausgabe = ausgabe + "Preis: "
-							+ ((JSONObject) price).get("value") + " €";
+					ausgabe = ausgabe + "Preis: " + ((JSONObject) price).get("value") + " €";
 				}
 				if (price instanceof JSONArray) {
-					ausgabe = ausgabe
-							+ "Preis: "
-							+ ((JSONObject) ((JSONArray) price).get(0))
-									.get("value") + " €";
+					ausgabe = ausgabe + "Preis: " + ((JSONObject) ((JSONArray) price).get(0)).get("value") + " €";
 				}
 			}
 
@@ -115,14 +94,13 @@ public class ApiUtil {
 	 * @throws JSONException
 	 * @throws IOException
 	 */
-	private static String getStringOutputLine(String titel, String referenz,
-			JSONObject obj) throws JSONException, IOException {
+	private static String getStringOutputLine(String titel, String referenz, JSONObject obj) throws JSONException,
+			IOException {
 		if (obj.has(referenz)) {
 			if (obj.get(referenz).toString().length() < 35) {
 				return titel + ": " + obj.get(referenz) + "\n";
 			} else {
-				JSONObject childobj = fetchObject(referenz + "s",
-						obj.get(referenz).toString());
+				JSONObject childobj = fetchObject(referenz + "s", obj.get(referenz).toString());
 				JSONObject result = childobj.getJSONObject("result");
 				return getStringOutputLine(titel, "name", result);
 			}
@@ -140,8 +118,7 @@ public class ApiUtil {
 	 * @return das gesuchte JSON Object
 	 * @throws IOException
 	 */
-	public static JSONObject fetchObject(String objType, String referenz)
-			throws IOException {
+	public static JSONObject fetchObject(String objType, String referenz) throws IOException {
 		String indicator; // dieser String weist zu ob wir unsere gesuchtes
 							// Object per number oder id referenzieren wollen
 		if (isID(referenz)) {
@@ -149,10 +126,7 @@ public class ApiUtil {
 		} else {
 			indicator = "number";
 		}
-		String url = AbstractApiService.KoronaApiUrl
-				+ AbstractApiService.KoronaApiVersion + "/"
-				+ DbReader.getToken() + "/" + objType + "/" + indicator + "/"
-				+ referenz;
+		String url = ApiProperties.get().getUrl() + "/" + objType + "/" + indicator + "/" + referenz;
 		String obj = ApiUtil.fetchData(url, null).toString();
 		return new JSONObject(obj);
 	}
@@ -171,32 +145,6 @@ public class ApiUtil {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * diese Methode fordert das Token-Authentifizierungselement vom Cloudserver
-	 * an und speichert es in die token.txt
-	 * 
-	 * @throws IOException
-	 */
-
-	public static String generateToken(TrayIcon processTrayIcon) {
-		String token = null;
-		try {
-			final String url = AbstractApiService.KoronaApiUrl
-					+ AbstractApiService.KoronaApiVersion + "/auth/" + AppID
-					+ "/" + AppSecret + "/" + ApiKey;
-			token = ApiUtil.fetchData(url, processTrayIcon).toString();
-			if (token != null) {
-				Token t = new Token();
-				t.setToken(token);
-				DbWriter.writeToken(t);
-			}
-
-		} catch (IOException e) {
-			// TODO: handle exception
-		}
-		return token;
 	}
 
 	// Trustmanager sorgt dafür, dass wir kein Zertifikat brauchen werden wie
@@ -219,8 +167,7 @@ public class ApiUtil {
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
 			sc.init(null, trustAllCerts, new SecureRandom());
-			HttpsURLConnection
-					.setDefaultSSLSocketFactory(sc.getSocketFactory());
+			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -236,8 +183,7 @@ public class ApiUtil {
 	 *         zu finden war
 	 * @throws IOException
 	 */
-	public static StringBuffer fetchData(final String url,
-			final TrayIcon processTrayIcon) {
+	public static StringBuffer fetchData(final String url, final TrayIcon processTrayIcon) {
 
 		URL obj = null;
 		try {
@@ -247,7 +193,7 @@ public class ApiUtil {
 		}
 		URLConnection con = null;
 		try {
-			if (AbstractApiService.KoronaApiUrl.contains("https")) {
+			if (ApiProperties.get().getUrl().contains("https")) {
 				setupConnection();
 				con = (HttpsURLConnection) obj.openConnection();
 			} else {
@@ -271,8 +217,8 @@ public class ApiUtil {
 			return response;
 		} catch (IOException e) {
 			// e.printStackTrace();
-			processTrayIcon.displayMessage("Connection Error Message",
-					"Could not connect to " + url, TrayIcon.MessageType.ERROR);
+			processTrayIcon.displayMessage("Connection Error Message", "Could not connect to " + url,
+					TrayIcon.MessageType.ERROR);
 		}
 
 		return null;
@@ -290,7 +236,7 @@ public class ApiUtil {
 	public static void postData(String url, JSONObject obj) throws IOException {
 		URL posturl = new URL(url);
 		HttpURLConnection con;
-		if (AbstractApiService.KoronaApiUrl.contains("https")) {
+		if (ApiProperties.get().getUrl().contains("https")) {
 			setupConnection();
 			con = (HttpsURLConnection) posturl.openConnection(); // öffnet die
 																	// Connection

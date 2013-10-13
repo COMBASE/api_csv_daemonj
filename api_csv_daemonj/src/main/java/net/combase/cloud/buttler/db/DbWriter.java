@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import net.combase.api.Token;
 import net.combase.api.domain.Customer;
 import net.combase.cloud.buttler.db.domain.FilesParsed;
 import net.combase.cloud.buttler.db.domain.ImportedCustomer;
 import net.combase.cloud.buttler.db.domain.LastRevision;
-import net.combase.cloud.buttler.db.domain.Token;
 
 public class DbWriter extends DBController {
 

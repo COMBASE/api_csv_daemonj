@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import net.combase.api.ApiProperties;
 import net.combase.cloud.buttler.db.DBController;
 import net.combase.cloud.buttler.db.DbReader;
 
@@ -31,6 +32,7 @@ public class CloudButler {
 			CloudButler systemTrayExample = new CloudButler();
 			systemTrayExample.createAndAddApplicationToSystemTray();
 			systemTrayExample.startProcess();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -45,6 +47,8 @@ public class CloudButler {
 		Image image = new ImageIcon("").getImage();
 		final TrayIcon trayIcon = new TrayIcon(image, TOOL_TIP);
 		this.processTrayIcon = trayIcon;
+
+		ApiProperties.get().setToken(DbReader.getToken(processTrayIcon));
 		final SystemTray tray = SystemTray.getSystemTray();
 		final PopupMenu popup = new TrayMenu(tray, trayIcon);
 

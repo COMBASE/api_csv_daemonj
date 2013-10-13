@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import net.combase.api.ApiProperties;
 import net.combase.api.domain.Sale;
 
 public class SaleApiService extends AbstractApiService {
@@ -33,7 +34,7 @@ public class SaleApiService extends AbstractApiService {
 	public static JSONArray fetchAllFromReceipt(final String token,
 			final String objType, final String receiptUuid) throws IOException {
 
-		String url = KoronaApiUrl + KoronaApiVersion + "/" + token + "/"
+		String url = ApiProperties.get().getUrl() + "/" + token + "/"
 				+ objType + "/all/" + receiptUuid;
 		String obj = fetchData(url).toString();
 		JSONArray results = new JSONArray();
