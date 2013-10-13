@@ -19,7 +19,7 @@ public class DBController {
 		}
 	}
 
-	public static DBController getInstance() {
+	public static DBController get() {
 		return dbcontroller;
 	}
 
@@ -51,6 +51,11 @@ public class DBController {
 				}
 			}
 		});
+	}
+
+	public boolean checkFileWithDB(String absolutePath, String md5) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 

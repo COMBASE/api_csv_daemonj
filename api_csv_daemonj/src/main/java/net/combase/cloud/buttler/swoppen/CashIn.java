@@ -7,6 +7,8 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.combase.cloud.buttler.db.DBController;
+
 public class CashIn {
 
 	public static boolean readFolder(File file) {
@@ -15,6 +17,7 @@ public class CashIn {
 
 			try {
 				String md5 = getMD5Checksum(f.getAbsolutePath());
+				boolean isAllreadyInsert = DBController.get().checkFileWithDB(f.getAbsolutePath(), md5);
 				System.out.print(md5);
 			} catch (Exception e) {
 				e.printStackTrace();

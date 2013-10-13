@@ -27,7 +27,7 @@ public class CloudButler {
 	private static DBController dbc;
 
 	public static void main(String[] args) {
-		dbc = DBController.getInstance();
+		dbc = DBController.get();
 		dbc.initDBConnection();
 		// dbc.handleDB();
 		try {
