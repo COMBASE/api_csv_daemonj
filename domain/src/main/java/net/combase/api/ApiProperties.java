@@ -21,6 +21,7 @@ public class ApiProperties {
 	private String cashin;
 	private String cashout;
 	private int timeOut;
+	private String customerGroupNumber;
 
 	protected ApiProperties() {
 		try {
@@ -34,6 +35,7 @@ public class ApiProperties {
 			cloudUrl = props.getProperty("url");
 			version = props.getProperty("version");
 			protocol = props.getProperty("protocol");
+			customerGroupNumber = props.getProperty("customerGroupNumber");
 			timeOut = Integer.valueOf(props.getProperty("timeOut")).intValue();
 
 			cashin = props.getProperty("cashin");
@@ -133,6 +135,10 @@ public class ApiProperties {
 	}
 
 	public int getTimeOut() {
-		return timeOut*1000;
+		return timeOut * 1000;
+	}
+
+	public String getCustomerGroupNumber() {
+		return customerGroupNumber;
 	}
 }

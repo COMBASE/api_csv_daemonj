@@ -73,4 +73,10 @@ public class DbWriter extends DBController {
 		return 0;
 	}
 
+	public static void createTableFiles() throws SQLException {
+		Statement stmt = connection.createStatement();
+		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS files_parsed (customerGroup INTEGER, name TEXT, md5Hash TEXT);");
+		
+	}
+
 }

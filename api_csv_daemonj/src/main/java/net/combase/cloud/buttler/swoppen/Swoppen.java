@@ -3,6 +3,7 @@ package net.combase.cloud.buttler.swoppen;
 import java.awt.TrayIcon;
 import java.io.File;
 
+
 public class Swoppen {
 	private final CashIn cashIn;
 	private final CashOut cashOut;
@@ -10,7 +11,6 @@ public class Swoppen {
 	public Swoppen(TrayIcon processTrayIcon) {
 		cashIn = new CashIn(processTrayIcon);
 		cashOut = new CashOut(processTrayIcon);
-		// TODO Auto-generated constructor stub
 	}
 
 	public CashIn getCashIn() {
@@ -21,7 +21,7 @@ public class Swoppen {
 		return cashOut;
 	}
 
-	public void doRun(String cashIn, String cashOut) {
+	public void doRun(final String cashIn, final String cashOut) {
 		// TODO Auto-generated method stub
 		if (getCashIn().readFolder(new File(cashIn)))
 			;

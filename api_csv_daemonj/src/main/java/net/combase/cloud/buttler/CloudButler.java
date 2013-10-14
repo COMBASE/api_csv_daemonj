@@ -4,12 +4,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.swing.*;
 
 import net.combase.api.ApiProperties;
 import net.combase.cloud.buttler.db.DBController;
 import net.combase.cloud.buttler.db.DbReader;
+import net.combase.cloud.buttler.db.DbWriter;
 import net.combase.cloud.buttler.swoppen.Swoppen;
 
 /**
@@ -29,6 +31,12 @@ public class CloudButler {
 	public static void main(String[] args) {
 		dbc = DBController.get();
 		dbc.initDBConnection();
+
+		try {
+			DbWriter.createTableFiles();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 		// dbc.handleDB();
 		try {
 			CloudButler systemTrayExample = new CloudButler();
@@ -74,7 +82,6 @@ public class CloudButler {
 	}
 
 	private void startProcess() throws IOException {
-
 		final Swoppen swoppen = new Swoppen(processTrayIcon);
 		Thread thread = new Thread(new Runnable() {
 			public void run() {

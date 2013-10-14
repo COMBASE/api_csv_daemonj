@@ -3,12 +3,19 @@ package net.combase.cloud.buttler.swoppen;
 import java.awt.TrayIcon;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import net.combase.cloud.buttler.db.DBController;
+import au.com.bytecode.opencsv.CSVReader;
+
+import net.combase.api.ApiProperties;
+import net.combase.cloud.buttler.db.DbReader;
+import net.combase.cloud.buttler.db.domain.FilesParsed;
 
 public class CashIn {
 
@@ -28,13 +35,37 @@ public class CashIn {
 
 			try {
 				String md5 = getMD5Checksum(f.getAbsolutePath());
-				boolean isAllreadyInsert = DBController.get().checkFileWithDB(f.getAbsolutePath(), md5);
-				System.out.print(md5);
+				if (!checkFileWithDB(f.getAbsolutePath(), md5)) {
+					parseFile(f);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		return true;
+	}
+
+	private static void parseFile(File f) {
+		try {
+			CSVReader reader = new CSVReader(new FileReader(f), ';');
+
+			try {
+
+				String[] values = reader.readNext();
+				while (values != null) {
+					System.out.println(Arrays.asList(values));
+					values = reader.readNext();
+				}
+			} finally {
+				// we have to close reader manually
+				reader.close();
+			}
+		} catch (IOException e) {
+			// we have to process exceptions when it is not required
+			e.printStackTrace();
+		}
+
+		System.out.print("parse\n");
 	}
 
 	private List<File> listFilesForFolder(final File folder) {
@@ -78,4 +109,16 @@ public class CashIn {
 		return result;
 	}
 
+	public static boolean checkFileWithDB(String absolutePath, String md5) {
+		try {
+			FilesParsed fileByPath = DbReader.getFileByPath(ApiProperties.get().getCustomerGroupNumber(), absolutePath);
+			if (fileByPath != null) {
+				if (md5.equals(fileByPath.getMd5Hash()))
+					return true;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }
