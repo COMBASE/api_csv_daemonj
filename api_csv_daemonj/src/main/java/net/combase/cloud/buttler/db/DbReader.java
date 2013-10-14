@@ -2,15 +2,14 @@ package net.combase.cloud.buttler.db;
 
 import java.awt.TrayIcon;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 import net.combase.api.ApiProperties;
 import net.combase.api.Token;
 import net.combase.cloud.buttler.db.domain.FilesParsed;
-import net.combase.cloud.buttler.db.domain.ImportedCustomer;
 
 public class DbReader extends DBController {
 	public static String getToken(TrayIcon processTrayIcon) throws IOException {
@@ -64,15 +63,27 @@ public class DbReader extends DBController {
 		return null;
 	}
 
-	public static List<ImportedCustomer> getCustomer(final Long customerGroupNumber) {
-		return null;
-	}
+	public static FilesParsed getFileByPath(String customerGroupNumber, String absolutePath) throws IOException {
+		try {
+			Connection con = connection;
+			final Statement stmt = con.createStatement();
+			final ResultSet rs = stmt.executeQuery("SELECT * FROM files_parsed WHERE customerGroup = "
+					+ customerGroupNumber + " AND name = '" + absolutePath+"';");
+			FilesParsed filesParsed = null;
+			while (rs.next()) {
+				filesParsed = new FilesParsed();
+				filesParsed.setMd5Hash(rs.getString("md5hash"));
+				filesParsed.setName(rs.getString("name"));
+				filesParsed.setCustomerGroup(rs.getString("customerGroup"));
+				break;
+			}
+			if (filesParsed == null)
+				return filesParsed;
+			return filesParsed;
 
-	public static List<FilesParsed> getFiles(final Long customerGroupNumber) {
-		return null;
-	}
-
-	public static List<FilesParsed> getLastRevision(final Long customerGroupNumber) {
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 }

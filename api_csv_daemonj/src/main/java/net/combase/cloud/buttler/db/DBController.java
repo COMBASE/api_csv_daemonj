@@ -3,6 +3,9 @@ package net.combase.cloud.buttler.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+
+import net.combase.api.ApiProperties;
 
 public class DBController {
 
@@ -52,12 +55,6 @@ public class DBController {
 			}
 		});
 	}
-
-	public boolean checkFileWithDB(String absolutePath, String md5) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 
 
 

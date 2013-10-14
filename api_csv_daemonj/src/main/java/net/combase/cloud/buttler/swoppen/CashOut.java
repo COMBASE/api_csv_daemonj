@@ -14,6 +14,7 @@ import net.combase.api.service.CashierApiService;
 import net.combase.api.service.CurrencyApiService;
 import net.combase.api.service.ReceiptApiService;
 import net.combase.api.service.SaleApiService;
+import net.combase.cloud.buttler.db.DBController;
 import net.combase.cloud.buttler.db.DbReader;
 
 public class CashOut {
