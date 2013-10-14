@@ -41,7 +41,7 @@ public class ProductApiService extends AbstractApiService {
 	/**
 	 * formatOutput sorgt für die Formatierung der erstellten Produktdaten, die
 	 * dann fertig an das Textfeld zurückgegeben werden können
-	 * 
+	 *
 	 * @param s
 	 *            ist der String in JSON-Syntax, den wir für unsere Ausgabe
 	 *            durchparsen
@@ -51,9 +51,9 @@ public class ProductApiService extends AbstractApiService {
 	 */
 	public static List<Product> formatOutputs(JSONArray result) {
 		List<Product> ret = new ArrayList<Product>();
-		
+
 		try {
-			Product product = new Product();
+//			Product product = new Product();
 //			ret.setName(result.get("name").toString());
 //			ret.setRevision(Long.valueOf(result.get("revision").toString())
 //					.longValue());

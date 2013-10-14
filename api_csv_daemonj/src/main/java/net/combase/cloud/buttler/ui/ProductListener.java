@@ -20,16 +20,15 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import org.json.JSONObject;
 
 import net.combase.api.ApiProperties;
-import net.combase.api.service.AbstractApiService;
 import net.combase.api.service.ApiUtil;
 import net.combase.api.service.ProductApiService;
 import net.combase.cloud.buttler.db.DbReader;
 
 /**
  * Diese Klasse ist für die Oberfläche verantwortlich
- * 
+ *
  * @author Gordon Bosch
- * 
+ *
  */
 public class ProductListener implements KeyListener {
 
@@ -64,7 +63,7 @@ public class ProductListener implements KeyListener {
 
 	/**
 	 * hier wird die GUI zusammengesetzt, Swing as usual
-	 * 
+	 *
 	 */
 	private void initialize() {
 		frmShowProduct = new JFrame();
@@ -199,7 +198,7 @@ public class ProductListener implements KeyListener {
 
 	/**
 	 * Wirft einen Error-Popup, wenn benötigt
-	 * 
+	 *
 	 * @param message
 	 *            die Error-Message
 	 */
@@ -213,7 +212,7 @@ public class ProductListener implements KeyListener {
 	/**
 	 * Hier wird der Namechange des Produktes implementiert Das entsprechende
 	 * Produkt ausgelesen, dessen Name ersetzt und an den Connector versandt
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	private void postProduct() throws IOException {
@@ -235,7 +234,7 @@ public class ProductListener implements KeyListener {
 	 * requestProduct prüft ob wir eine Eingabe im Textfeld haben, und ob die
 	 * auch eine Zahl ist und erfragt die Daten lässt sie formatieren und setzt
 	 * am Ende das Textfeld
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public static void requestProduct() throws IOException {

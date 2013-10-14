@@ -13,9 +13,9 @@ import net.combase.cloud.buttler.db.DbReader;
 import net.combase.cloud.buttler.swoppen.Swoppen;
 
 /**
- * 
+ *
  * @author mziescha
- * 
+ *
  */
 
 public class CloudButler {
@@ -75,8 +75,8 @@ public class CloudButler {
 
 	private void startProcess() throws IOException {
 
+		final Swoppen swoppen = new Swoppen(processTrayIcon);
 		Thread thread = new Thread(new Runnable() {
-
 			public void run() {
 
 				try {
@@ -91,7 +91,7 @@ public class CloudButler {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					Swoppen.doRun(ApiProperties.get().getCashin(), ApiProperties.get().getCashout());
+					swoppen.doRun(ApiProperties.get().getCashin(), ApiProperties.get().getCashout());
 				}
 			}
 		});

@@ -28,16 +28,16 @@ import org.json.JSONObject;
 /**
  * Diese Klasse regelt uns den Zugriff auf die Cloud bzw deren Schnittstelle
  * durch HTTPS GETs und POSTs
- * 
+ *
  * @author Gordon Bosch
- * 
+ *
  */
 public class ApiUtil {
 
 	/**
 	 * formatOutput sorgt für die Formatierung der erstellten Produktdaten, die
 	 * dann fertig an das Textfeld zurückgegeben werden können
-	 * 
+	 *
 	 * @param s
 	 *            ist der String in JSON-Syntax, den wir für unsere Ausgabe
 	 *            durchparsen
@@ -83,7 +83,7 @@ public class ApiUtil {
 	/**
 	 * Diese Methode prüft ob die Referenz (zB.: "name" oder "Revision") gültig
 	 * ist und falls ja generiert es eine Ausgabezeile daraus
-	 * 
+	 *
 	 * @param titel
 	 *            Der Zeilenname
 	 * @param referenz
@@ -110,7 +110,7 @@ public class ApiUtil {
 
 	/**
 	 * fetchObject zieht das gesuchte Object anhand
-	 * 
+	 *
 	 * @param objType
 	 *            dem ObjectType
 	 * @param referenz
@@ -133,7 +133,7 @@ public class ApiUtil {
 
 	/**
 	 * isID prüft einen String ob es sich um eine ID handelt oder Nummer
-	 * 
+	 *
 	 * @param s
 	 *            der Eingabestring
 	 * @return true falls ID, false fals Nummer
@@ -175,7 +175,7 @@ public class ApiUtil {
 
 	/**
 	 * fetchData holt uns die benötigten Daten per Https-GET-Requests vom Server
-	 * 
+	 *
 	 * @param url
 	 *            stellt die aktuelle URL für die jeweils gesuchten Infos dar
 	 * @param processTrayIcon
@@ -226,7 +226,7 @@ public class ApiUtil {
 
 	/**
 	 * postData sendet ein JSON-Objekt per POST zurück an die CLOUD
-	 * 
+	 *
 	 * @param url
 	 *            des Servers
 	 * @param obj

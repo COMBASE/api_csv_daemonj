@@ -61,14 +61,14 @@ public class ApiProperties {
 	/**
 	 * diese Methode fordert das Token-Authentifizierungselement vom Cloudserver
 	 * an und speichert es in die token.txt
-	 * 
+	 *
 	 * @throws IOException
 	 */
 
 	public static Token generateToken(TrayIcon processTrayIcon) {
 		String token = null;
 
-		final String url = get().getProtocol() + get().getCloudUrl() + get().getVersion() + "/auth/"
+		final String url = get().getUrl() + "/auth/"
 				+ ApiProperties.get().getAppId() + "/" + ApiProperties.get().getAppSecret() + "/"
 				+ ApiProperties.get().getApiAccesKey();
 		token = ApiUtil.fetchData(url, processTrayIcon).toString();

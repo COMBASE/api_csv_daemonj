@@ -1,5 +1,6 @@
 package net.combase.cloud.buttler.swoppen;
 
+import java.awt.TrayIcon;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -11,7 +12,17 @@ import net.combase.cloud.buttler.db.DBController;
 
 public class CashIn {
 
-	public static boolean readFolder(File file) {
+	private final TrayIcon processTrayIcon;
+
+	public CashIn() {
+		this(null);
+	}
+
+	public CashIn(TrayIcon processTrayIcon) {
+		this.processTrayIcon = processTrayIcon;
+	}
+
+	public boolean readFolder(File file) {
 		final List<File> listFiles = listFilesForFolder(file);
 		for (File f : listFiles) {
 
@@ -26,8 +37,14 @@ public class CashIn {
 		return true;
 	}
 
-	private static List<File> listFilesForFolder(final File folder) {
+	private List<File> listFilesForFolder(final File folder) {
 		List<File> ret = new ArrayList<File>();
+		if (folder.listFiles() == null) {
+			if (processTrayIcon != null)
+				processTrayIcon.displayMessage("Connection Error Message", "Could not find folder " + folder,
+						TrayIcon.MessageType.ERROR);
+			return ret;
+		}
 		for (final File fileEntry : folder.listFiles()) {
 			if (!fileEntry.isDirectory())
 				ret.add(fileEntry);

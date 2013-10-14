@@ -13,9 +13,9 @@ import net.combase.cloud.buttler.swoppen.CashOut;
 import net.combase.cloud.buttler.swoppen.CashOut.ReceiptSaleSummaryBean;
 
 /**
- * 
+ *
  * @author Mario Zieschang
- * 
+ *
  */
 public class ReceiptListPanel extends JFrame {
 

@@ -1,5 +1,6 @@
 package net.combase.cloud.buttler.swoppen;
 
+import java.awt.TrayIcon;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -25,9 +26,8 @@ public class CashOut {
 		private final Currency currency;
 		private final Cashier cashier;
 
-		public ReceiptSaleSummaryBean(final String date, final String time,
-				final Currency currency, final Receipt receipt,
-				final Cashier cashier, final Sale sale) {
+		public ReceiptSaleSummaryBean(final String date, final String time, final Currency currency,
+				final Receipt receipt, final Cashier cashier, final Sale sale) {
 			this.date = date;
 			this.time = time;
 			this.sale = sale;
@@ -62,44 +62,47 @@ public class CashOut {
 		}
 
 		public BigDecimal getTax() {
-			final BigDecimal subtract = sale.getGrossItemPrice().subtract(
-					sale.getNetItemPrice());
-			return subtract.divide((sale.getNetItemPrice().divide(
-					BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP)), 2,
+			final BigDecimal subtract = sale.getGrossItemPrice().subtract(sale.getNetItemPrice());
+			return subtract.divide(
+					(sale.getNetItemPrice().divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP)), 2,
 					BigDecimal.ROUND_HALF_UP);
 		}
 
 	}
 
+	private final TrayIcon processTrayIcon;
+
+	public CashOut() {
+		this(null);
+	}
+
+	public CashOut(TrayIcon processTrayIcon) {
+		this.processTrayIcon = processTrayIcon;
+	}
+
 	public void writeCashOutFile(final Long customerGroup, final Long revision) {
 
-		List<Receipt> receipts = ReceiptApiService
-				.getUpdatesByRevision(revision);
+		List<Receipt> receipts = ReceiptApiService.getUpdatesByRevision(revision);
 		Long maxRevision = Long.valueOf(0);
 		StringBuilder line = new StringBuilder();
 		try {
-			final Currency currency = CurrencyApiService.getByNumber(
-					DbReader.getToken(), Long.valueOf(1));
+			final Currency currency = CurrencyApiService.getByNumber(DbReader.getToken(), Long.valueOf(1));
 			for (Receipt receipt : receipts) {
 				if (receipt.getRevision() > maxRevision)
 					maxRevision = receipt.getRevision();
 
-				List<Sale> sales = SaleApiService.getAllFromReceipt(
-						DbReader.getToken(), receipt.getUuid());
+				List<Sale> sales = SaleApiService.getAllFromReceipt(DbReader.getToken(), receipt.getUuid());
 				for (Sale sale : sales) {
-					Cashier cashier = CashierApiService.getByNumber(
-							DbReader.getToken(),
+					Cashier cashier = CashierApiService.getByNumber(DbReader.getToken(),
 							Long.valueOf(sale.getCashier()));
 					line.append(receipt.getCustomer());// Customer number
 					line.append(receipt.getNumber());// receipt number
 					// $s->{date} = qq~$day.$month.$year~;
 					// $s->{time} = $time;
 					// $s->{tax} = sprintf "%.0f,00",
-					final BigDecimal subtract = sale.getGrossItemPrice()
-							.subtract(sale.getNetItemPrice());
-					final BigDecimal grossItemPrice = subtract.divide((sale
-							.getNetItemPrice().divide(BigDecimal.valueOf(100),
-							2, BigDecimal.ROUND_HALF_UP)), 2,
+					final BigDecimal subtract = sale.getGrossItemPrice().subtract(sale.getNetItemPrice());
+					final BigDecimal grossItemPrice = subtract.divide(
+							(sale.getNetItemPrice().divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP)), 2,
 							BigDecimal.ROUND_HALF_UP);
 					line.append(cashier.getFirstname());
 					line.append(currency.getSymbol());
@@ -115,18 +118,15 @@ public class CashOut {
 		}
 	}
 
-	public List<ReceiptSaleSummaryBean> getCashOutData(
-			final Long customerGroup, final Long revision) {
+	public List<ReceiptSaleSummaryBean> getCashOutData(final Long customerGroup, final Long revision) {
 
 		List<ReceiptSaleSummaryBean> ret = new ArrayList<ReceiptSaleSummaryBean>();
 
 		List<Receipt> receipts = null;
 		Currency currency = null;
 		try {
-			currency = CurrencyApiService.getByNumber(DbReader.getToken(),
-					Long.valueOf(1));
-			receipts = ReceiptApiService.getPageByCustomerGroup(
-					DbReader.getToken(), Long.valueOf(123456));
+			currency = CurrencyApiService.getByNumber(DbReader.getToken(), Long.valueOf(1));
+			receipts = ReceiptApiService.getPageByCustomerGroup(DbReader.getToken(), Long.valueOf(123456));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -135,14 +135,11 @@ public class CashOut {
 			for (Receipt receipt : receipts) {
 
 				try {
-					List<Sale> sales = SaleApiService.getAllFromReceipt(
-							DbReader.getToken(), receipt.getUuid());
+					List<Sale> sales = SaleApiService.getAllFromReceipt(DbReader.getToken(), receipt.getUuid());
 					for (Sale sale : sales) {
-						Cashier cashier = CashierApiService.getByNumber(
-								DbReader.getToken(),
+						Cashier cashier = CashierApiService.getByNumber(DbReader.getToken(),
 								Long.valueOf(sale.getCashier()));
-						ret.add(new ReceiptSaleSummaryBean("", "", currency,
-								receipt, cashier, sale));
+						ret.add(new ReceiptSaleSummaryBean("", "", currency, receipt, cashier, sale));
 
 					}
 				} catch (IOException e) {
@@ -154,8 +151,8 @@ public class CashOut {
 		return ret;
 	}
 
-	public static void writeFolder(File file) {
+	public void writeFolder(File file) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
