@@ -13,7 +13,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
+import javax.swing.JOptionPane;
 
 import net.combase.api.ApiProperties;
 
@@ -25,7 +25,7 @@ public class AbstractApiService {
 
 	/**
 	 * fetchObject zieht das gesuchte Object anhand
-	 * 
+	 *
 	 * @param objType
 	 *            dem ObjectType
 	 * @param referenz
@@ -75,7 +75,7 @@ public class AbstractApiService {
 
 	/**
 	 * fetchData holt uns die benötigten Daten per Https-GET-Requests vom Server
-	 * 
+	 *
 	 * @param url
 	 *            stellt die aktuelle URL für die jeweils gesuchten Infos dar
 	 * @return Stringbuffer response enthält alles in JSONForm was unter der URL
@@ -142,7 +142,7 @@ public class AbstractApiService {
 	/**
 	 * Diese Methode prüft ob die Referenz (zB.: "name" oder "Revision") gültig
 	 * ist und falls ja generiert es eine Ausgabezeile daraus
-	 * 
+	 *
 	 * @param titel
 	 *            Der Zeilenname
 	 * @param referenz
@@ -166,6 +166,12 @@ public class AbstractApiService {
 			}
 		}
 		return null;
+	}
+
+
+	private void post(final JSONObject json, final String object) throws IOException {
+		ApiUtil.postData(ApiProperties.get().getUrl() + "/"+object+"/save/", json);
+
 	}
 
 	protected static Boolean toBool(final Object object) {
