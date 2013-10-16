@@ -105,6 +105,20 @@ public class DbWriter extends DBController {
 	}
 
 	public static ImportedCustomer setCustomer(ImportedCustomer existingClienCustomer) {
+		try {
+			final Statement statement = connection.createStatement();
+			String sql = "INSERT INTO imported_customer (status, file_id, customer_number, customer_name) "
+					+ "VALUES ('" + existingClienCustomer.getStatus() + "', '" + existingClienCustomer.getFileId()
+					+ "', '" + existingClienCustomer.getCustomerNumber() + "', '"
+					+ existingClienCustomer.getCustomerName() + "' );";
+			statement.executeUpdate(sql);
+			statement.close();
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -150,6 +150,9 @@ public class CashIn {
 			existingClienCustomer = new ImportedCustomer();
 			existingClienCustomer.setStatus(2);
 			existingClienCustomer.setCustomerGroupNumber(Long.valueOf(getCustomerGroup().getNumber()));
+			existingClienCustomer.setCustomerNumber(Long.valueOf(newCloudCustomer.getNumber()));
+			existingClienCustomer.setCustomerName(newCloudCustomer.getName());
+			existingClienCustomer.setCustomerGroupNumber(Long.valueOf(getCustomerGroup().getNumber()));
 			DbWriter.setCustomer(existingClienCustomer);
 			return newCloudCustomer;
 		}
