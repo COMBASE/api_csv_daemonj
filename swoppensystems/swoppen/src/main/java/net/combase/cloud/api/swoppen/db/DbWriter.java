@@ -86,18 +86,18 @@ public class DbWriter extends DBController {
 		// print
 		// "UPDATE parsed_lines SET current = $customer->{current} WHERE customer_number = $customer->{customer_number}\n";
 		if (existingClienCustomer != null) {
-//			try {
-//				Statement stmt = connection.createStatement();
-				String string = "UPDATE imported_customer SET status = '" + existingClienCustomer.getStatus()
-						+ "' file_id = '" + existingClienCustomer.getFileId() + "' customer_name = '"
-						+ existingClienCustomer.getCustomerName() + "' WHERE customer_number = ? '"
-						+ existingClienCustomer.getCustomerNumber() + "';";
-				System.out.println(string);
-//				stmt.executeUpdate(string);
-//			} catch (SQLException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			// try {
+			// Statement stmt = connection.createStatement();
+			String string = "UPDATE imported_customer SET status = '" + existingClienCustomer.getStatus()
+					+ "' file_id = '" + existingClienCustomer.getFileId() + "' customer_name = '"
+					+ existingClienCustomer.getCustomerName() + "' WHERE customer_number = ? '"
+					+ existingClienCustomer.getCustomerNumber() + "';";
+			System.out.println(string);
+			// stmt.executeUpdate(string);
+			// } catch (SQLException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
 
 		}
 		// TODO Auto-generated method stub

@@ -19,7 +19,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-
 import net.combase.api.ApiProperties;
 
 import org.json.JSONArray;
@@ -239,15 +238,9 @@ public class ApiUtil {
 		HttpURLConnection con;
 		if (ApiProperties.get().getUrl().contains("https")) {
 			setupConnection();
-			con = (HttpsURLConnection) posturl.openConnection(); // öffnet die
-																	// Connection
-																	// zum
-																	// Server
-																	// (Https)
+			con = (HttpsURLConnection) posturl.openConnection();
 		} else {
-			con = (HttpURLConnection) posturl.openConnection(); // öffnet die
-																// Connection
-																// zum Server
+			con = (HttpURLConnection) posturl.openConnection();
 		}
 		JSONObject.testValidity(obj); // testet ob valides JSON
 		con.setRequestMethod("POST"); // setzt PostMethode

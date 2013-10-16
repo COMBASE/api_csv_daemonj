@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,7 +16,7 @@ public class CustomerApiService extends AbstractApiService {
 
 	private static final String object = "customers";
 
-	public static Customer getByNumber( final Long number) {
+	public static Customer getByNumber(final Long number) {
 		JSONArray fetchByNumber = null;
 		try {
 			fetchByNumber = fetchByNumber(ApiProperties.get().getToken(), object, number);
@@ -27,12 +29,20 @@ public class CustomerApiService extends AbstractApiService {
 		return null;
 	}
 
-	public static Customer save(Customer newCloudCustomer) {
-
+	public static Customer saveCustomer(Customer newCloudCustomer) {
+		try {
+			post(new JSONObject(newCloudCustomer), object);
+			Customer byNumber = getByNumber(Long.valueOf(newCloudCustomer.getNumber()));
+			return byNumber;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
-		// TODO Auto-generated method stub
 
 	}
+
+
 
 	public static List<Customer> formatOutputs(JSONArray results) {
 		final List<Customer> ret = new ArrayList<Customer>();

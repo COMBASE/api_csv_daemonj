@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import au.com.bytecode.opencsv.CSVReader;
 
 import net.combase.api.ApiProperties;
@@ -57,8 +59,11 @@ public class CashIn {
 				System.out.print("parse: " + f + "\n");
 				String[] values = reader.readNext();
 				while (values != null) {
-					handleCashInLine(values, filesParsed);
-
+					Customer customer = handleCashInLine(values, filesParsed);
+					if(customer != null)
+						System.out.println(new JSONObject(customer));
+					else
+						System.out.println(customer);
 					values = reader.readNext();
 				}
 			} finally {
@@ -124,32 +129,29 @@ public class CashIn {
 	}
 
 	private Customer handleCashInLine(final String[] fields, final FilesParsed filesParsed) {
-		System.out.println(Arrays.asList(fields));
-
 		final String customerNumber = fields[0];
 		ImportedCustomer existingClienCustomer = DbReader.getCustomer(customerNumber);
 		final Customer existingCloudCustomer = CustomerApiService.getByNumber(Long.valueOf(customerNumber));
 		if (existingClienCustomer != null && existingCloudCustomer != null) {
 			existingClienCustomer.setStatus(2);
 			DbWriter.updateCustomer(existingClienCustomer);
+			return existingCloudCustomer;
 		}
 
-		final Customer newCloudCustomer = new Customer();
-
+		Customer newCloudCustomer = new Customer();
 		newCloudCustomer.setNumber(customerNumber);
 		newCloudCustomer.setName(fields[1] + " " + fields[2]);
 		newCloudCustomer.setFirstName(fields[1]);
 		newCloudCustomer.setLastName(fields[2]);
-		newCloudCustomer.setCustomerGroup(getCustomerGroup().getUuid());
+		newCloudCustomer.setCustomerGroup(getCustomerGroup().getNumber());
+		newCloudCustomer = CustomerApiService.saveCustomer(newCloudCustomer);
 
-		final Customer cloudCustomer = CustomerApiService.save(newCloudCustomer);
-		if (cloudCustomer != null) {
+		if (newCloudCustomer != null) {
 			existingClienCustomer = new ImportedCustomer();
 			existingClienCustomer.setStatus(2);
-			existingClienCustomer.setFileId(filesParsed.getId());
 			existingClienCustomer.setCustomerGroupNumber(Long.valueOf(getCustomerGroup().getNumber()));
 			DbWriter.setCustomer(existingClienCustomer);
-			return cloudCustomer;
+			return newCloudCustomer;
 		}
 		return null;
 	}

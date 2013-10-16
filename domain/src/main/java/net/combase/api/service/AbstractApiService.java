@@ -168,9 +168,8 @@ public class AbstractApiService {
 		return null;
 	}
 
-
-	private void post(final JSONObject json, final String object) throws IOException {
-		ApiUtil.postData(ApiProperties.get().getUrl() + "/"+object+"/save/", json);
+	protected static void post(final JSONObject json, final String object) throws IOException {
+		ApiUtil.postData(ApiProperties.get().getUrl() + object + "/save/", json);
 
 	}
 
