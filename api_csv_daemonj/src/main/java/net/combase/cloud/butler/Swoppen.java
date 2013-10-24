@@ -29,11 +29,14 @@ public class Swoppen {
 		return cashOut;
 	}
 
-	public void doRun(final String cashIn, final String cashOut) {
+	public boolean doRun(final String cashIn, final String cashOut) {
 
 		if (getCashIn().readFolder(new File(cashIn)))
 			; 		// TODO for releas remove semikolon
+		else
+			return false;
 		getCashOut().writeFolder(new File(cashOut));
+		return true;
 	}
 
 }

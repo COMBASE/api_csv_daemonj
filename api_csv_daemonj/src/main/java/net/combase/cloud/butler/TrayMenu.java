@@ -15,6 +15,7 @@ import java.awt.event.ItemListener;
 
 import javax.swing.JOptionPane;
 
+import net.combase.cloud.api.lekkerland.LekkerlandMenu;
 import net.combase.cloud.butler.ui.ProductListener;
 import net.combase.cloud.butler.ui.ReceiptListPanel;
 
@@ -36,6 +37,8 @@ public class TrayMenu extends PopupMenu {
 	private MenuItem infoItem;
 	private MenuItem noneItem;
 	private MenuItem receiptUiItem;
+	private MenuItem llItem;
+	private Menu llMenu;
 
 	public TrayMenu(final SystemTray tray, final TrayIcon trayIcon) {
 		super();
@@ -48,7 +51,9 @@ public class TrayMenu extends PopupMenu {
 		this.add(getAutoSizeCheckBox());
 		this.add(getToolTipCheckBox());
 		this.addSeparator();
+		this.add(getllMenu());
 		this.add(getDisplayMenu());
+		this.addSeparator();
 		this.add(getExitItem());
 	}
 
@@ -58,12 +63,15 @@ public class TrayMenu extends PopupMenu {
 			productUiItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); // Screensize
-																							// bestimmen
+						Dimension dimension = Toolkit.getDefaultToolkit()
+								.getScreenSize(); // Screensize
+													// bestimmen
 						ProductListener window = new ProductListener(); // MainWindow
 																		// erstellen
-						int x = (int) ((dimension.getWidth() - window.getFrmShowProduct().getWidth()) / 2);
-						int y = (int) ((dimension.getHeight() - window.getFrmShowProduct().getHeight()) / 2);
+						int x = (int) ((dimension.getWidth() - window
+								.getFrmShowProduct().getWidth()) / 2);
+						int y = (int) ((dimension.getHeight() - window
+								.getFrmShowProduct().getHeight()) / 2);
 						window.getFrmShowProduct().setVisible(true); // Fenster
 						// sichtbar
 						// machen
@@ -96,6 +104,24 @@ public class TrayMenu extends PopupMenu {
 			});
 		}
 		return receiptUiItem;
+	}
+
+	public MenuItem getLlItemItem() {
+		if (llItem == null) {
+			llItem = new MenuItem("Show Lekkerland Menu");
+			llItem.addActionListener(new ActionListener() {
+
+				public void actionPerformed(ActionEvent e) {
+					try {
+						new ReceiptListPanel();
+
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+			});
+		}
+		return llItem;
 	}
 
 	public CheckboxMenuItem getAutoSizeCheckBox() {
@@ -141,16 +167,21 @@ public class TrayMenu extends PopupMenu {
 			ActionListener listener = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					MenuItem item = (MenuItem) e.getSource();
-					System.out.println(item.getLabel());
 					if ("Error".equals(item.getLabel())) {
-						trayIcon.displayMessage(MESSAGE_HEADER, "This is an error message", TrayIcon.MessageType.ERROR);
+						trayIcon.displayMessage(MESSAGE_HEADER, "This is an "
+								+ item.getLabel() + " message",
+								TrayIcon.MessageType.ERROR);
 					} else if ("Warning".equals(item.getLabel())) {
-						trayIcon.displayMessage(MESSAGE_HEADER, "This is a warning message",
+						trayIcon.displayMessage(MESSAGE_HEADER, "This is a "
+								+ item.getLabel() + " message",
 								TrayIcon.MessageType.WARNING);
 					} else if ("Info".equals(item.getLabel())) {
-						trayIcon.displayMessage(MESSAGE_HEADER, "This is an info message", TrayIcon.MessageType.INFO);
+						trayIcon.displayMessage(MESSAGE_HEADER, "This is an "
+								+ item.getLabel() + " message",
+								TrayIcon.MessageType.INFO);
 					} else if ("None".equals(item.getLabel())) {
-						trayIcon.displayMessage(MESSAGE_HEADER, "This is an ordinary message",
+						trayIcon.displayMessage(MESSAGE_HEADER, "This is an "
+								+ item.getLabel() + " message",
 								TrayIcon.MessageType.NONE);
 					}
 				}
@@ -173,12 +204,19 @@ public class TrayMenu extends PopupMenu {
 		return displayMenu;
 	}
 
+	public MenuItem getllMenu() {
+		if (llMenu == null) 
+			llMenu = new LekkerlandMenu(trayIcon, "Show Lekkerland Menu");
+		return llMenu;
+	}
+
 	public MenuItem getAboutItem() {
 		if (aboutItem == null) {
 			aboutItem = new MenuItem("Tray Info");
 			aboutItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(null, "This dialog is all about system tray program");
+					JOptionPane.showMessageDialog(null,
+							"This dialog is all about system tray program");
 				}
 			});
 		}

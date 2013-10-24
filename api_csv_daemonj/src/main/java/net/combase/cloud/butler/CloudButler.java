@@ -14,9 +14,9 @@ import net.combase.cloud.api.swoppen.db.DbReader;
 import net.combase.cloud.api.swoppen.db.DbWriter;
 
 /**
- *
+ * 
  * @author mziescha
- *
+ * 
  */
 
 public class CloudButler {
@@ -75,7 +75,8 @@ public class CloudButler {
 		// Add listener to trayIcon.
 		trayIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "This dialog box is run from System Tray");
+				JOptionPane.showMessageDialog(null,
+						"This dialog box is run from System Tray");
 			}
 		});
 
@@ -91,14 +92,16 @@ public class CloudButler {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-
+				boolean runSwoppen = true;
 				while (true) {
 					try {
 						Thread.sleep(ApiProperties.get().getTimeOut());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					swoppen.doRun(ApiProperties.get().getCashin(), ApiProperties.get().getCashout());
+					if (runSwoppen)
+						runSwoppen = swoppen.doRun(ApiProperties.get()
+								.getCashin(), ApiProperties.get().getCashout());
 				}
 			}
 		});

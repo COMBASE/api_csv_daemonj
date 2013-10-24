@@ -36,6 +36,8 @@ public class CashIn {
 
 	public boolean readFolder(File file) {
 		final List<File> listFiles = listFilesForFolder(file);
+		if(listFiles == null)
+			return false;
 		for (File f : listFiles) {
 
 			try {
@@ -77,9 +79,11 @@ public class CashIn {
 	private List<File> listFilesForFolder(final File folder) {
 		List<File> ret = new ArrayList<File>();
 		if (folder.listFiles() == null) {
-			if (processTrayIcon != null)
+			if (processTrayIcon != null){
 				processTrayIcon.displayMessage("Connection Error Message", "Could not find folder " + folder,
 						TrayIcon.MessageType.ERROR);
+				return null;
+			}
 			return ret;
 		}
 		for (final File fileEntry : folder.listFiles()) {
