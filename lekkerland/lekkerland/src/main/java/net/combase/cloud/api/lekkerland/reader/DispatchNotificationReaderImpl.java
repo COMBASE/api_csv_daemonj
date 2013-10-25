@@ -1,10 +1,13 @@
 package net.combase.cloud.api.lekkerland.reader;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 public class DispatchNotificationReaderImpl extends AbstractReader {
 
-	final static int[] a10Fields = {
+	private final static int[] a10Fields = {
 			DispatchNotificationLineType.A10_001_RECORDART.getCode(),
 			DispatchNotificationLineType.A10_002_DATENART.getCode(),
 			DispatchNotificationLineType.A10_003_VERSION.getCode(),
@@ -17,14 +20,14 @@ public class DispatchNotificationReaderImpl extends AbstractReader {
 			DispatchNotificationLineType.A10_010_ABSENDENDES_SYSTEM.getCode(),
 			DispatchNotificationLineType.A10_011_EMPFANGENDES_SYSTEM.getCode() };
 
-	final static int[] l10Fields = {
+	private final static int[] l10Fields = {
 			DispatchNotificationLineType.L10_001_RECORDART.getCode(),
 			DispatchNotificationLineType.L10_002_LIEFERDATUM.getCode(),
 			DispatchNotificationLineType.L10_003_LIEFERSCHEIN_NUMMER.getCode(),
 			DispatchNotificationLineType.L10_004_LIEFERSCHEINART.getCode(),
 			DispatchNotificationLineType.L10_005_LIEFERSCHEIN_NUMMER_ALLES
 					.getCode() };
-	final static int[] l20Fields = {
+	private final static int[] l20Fields = {
 			DispatchNotificationLineType.L20_001_RECORDART.getCode(),
 			DispatchNotificationLineType.L20_002_POSITIONSNUMMER.getCode(),
 			DispatchNotificationLineType.L20_003_ARTIKEL_NR_BESTELLT.getCode(),
@@ -77,7 +80,7 @@ public class DispatchNotificationReaderImpl extends AbstractReader {
 			DispatchNotificationLineType.L20_046_VERKAUFSEINHEIT.getCode(),
 			DispatchNotificationLineType.L20_047_MHD.getCode() };
 
-	final static int[] l25Fields = {
+	private final static int[] l25Fields = {
 			DispatchNotificationLineType.L25_001_RECORDART.getCode(),
 			DispatchNotificationLineType.L25_002_ARTIKELNUMMER.getCode(),
 			DispatchNotificationLineType.L25_003_EAN_NUMMER_VE.getCode(),
@@ -95,7 +98,7 @@ public class DispatchNotificationReaderImpl extends AbstractReader {
 					.getCode(),
 			DispatchNotificationLineType.L25_011_TEXTKUERZEL_HOEHERE_STUFE
 					.getCode() };
-	final static int[] s01Fields = {
+	private final static int[] s01Fields = {
 			DispatchNotificationLineType.S01_001_RECORDART.getCode(),
 			DispatchNotificationLineType.S01_002_DATENART.getCode(),
 			DispatchNotificationLineType.S01_003_VERSION.getCode(),
@@ -105,35 +108,71 @@ public class DispatchNotificationReaderImpl extends AbstractReader {
 			DispatchNotificationLineType.S01_007_ANZAHL_DATENSAETZE.getCode(),
 			DispatchNotificationLineType.S01_008_LAUFNUMMER.getCode(),
 			DispatchNotificationLineType.S01_009_MAILADRESSE.getCode() };
+	private final int[] e01Fields = {
+			DispatchNotificationLineType.E01_001_RECORDART.getCode(),
+			DispatchNotificationLineType.E01_002_DATENART.getCode(),
+			DispatchNotificationLineType.E01_003_VERSION.getCode(),
+			DispatchNotificationLineType.E01_004_PARTNERNUMMER.getCode(),
+			DispatchNotificationLineType.E01_005_ERSTELLUNGSDATUM.getCode(),
+			DispatchNotificationLineType.E01_006_ERSTELLUNGSZEIT.getCode(),
+			DispatchNotificationLineType.E01_007_ANZAHL_DATENSAETZE.getCode(),
+			DispatchNotificationLineType.E01_008_LAUFNUMMER.getCode() };
+	private final int[] z90Fields = {
+			DispatchNotificationLineType.Z90_001_RECORDART.getCode(),
+			DispatchNotificationLineType.Z90_002_DATENART.getCode(),
+			DispatchNotificationLineType.Z90_003_VERSION.getCode(),
+			DispatchNotificationLineType.Z90_004_PARTNERART.getCode(),
+			DispatchNotificationLineType.Z90_005_PARTNERNUMMER.getCode(),
+			DispatchNotificationLineType.Z90_006_UEBERMITTLUNGSART.getCode(),
+			DispatchNotificationLineType.Z90_007_PAKETNUMMER.getCode(),
+			DispatchNotificationLineType.Z90_008_ZIP_FLAG.getCode(),
+			DispatchNotificationLineType.Z90_009_RESTART_NUMMER.getCode(),
+			DispatchNotificationLineType.Z90_010_ABSENDENDES_SYSTEM.getCode(),
+			DispatchNotificationLineType.Z90_011_EMPFANGENDES_SYSTEM.getCode() };
 
-	public DispatchNotificationReaderImpl() {
-		super();
+	public String[] readA10(final String sCurrentLine) {
+		return readLine(sCurrentLine, a10Fields);
 	}
 
-	public void readA10(final String sCurrentLine) {
-		final String[] readLine = readLine(sCurrentLine, a10Fields);
-		System.out.println(Arrays.deepToString(readLine));
+	public String[] readL25(final String sCurrentLine) {
+		return readLine(sCurrentLine, l25Fields);
 	}
 
-	public void readL25(final String sCurrentLine) {
-		final String[] readLine = readLine(sCurrentLine, l25Fields);
-		System.out.println(Arrays.deepToString(readLine));
+	public String[] readL20(final String sCurrentLine) {
+		return readLine(sCurrentLine, l20Fields);
 	}
 
-	public void readL20(final String sCurrentLine) {
-		final String[] readLine = readLine(sCurrentLine, l20Fields);
-		System.out.println(Arrays.deepToString(readLine));
+	public String[] readL10(final String sCurrentLine) {
+		return readLine(sCurrentLine, l10Fields);
 	}
 
-	public void readL10(final String sCurrentLine) {
-		final String[] readLine = readLine(sCurrentLine, l10Fields);
-		System.out.println(Arrays.deepToString(readLine));
+	public String[] readS01(final String sCurrentLine) {
+		return readLine(sCurrentLine, s01Fields);
 	}
-	
 
-	public void readS01(final String sCurrentLine) {
-		final String[] readLine = readLine(sCurrentLine, s01Fields);
-		System.out.println(Arrays.deepToString(readLine));
+	public String[] readE01(final String sCurrentLine) {
+		return readLine(sCurrentLine, e01Fields);
+	}
+
+	public String[] readZ90(final String sCurrentLine) {
+		return readLine(sCurrentLine, z90Fields);
+	}
+
+	public Date getDate(final String date, final String time) {
+		int[] dateFields = { 4, 2, 2 };
+		int[] timeFields = { 2, 2, 2 };
+		String[] readLine = readLine(date, dateFields);
+		String[] readLine2 = readLine(time, timeFields);
+	    SimpleDateFormat sdfToDate = new SimpleDateFormat( "dd.MM.yyyy HH:mm:ss" );
+	    Date ret = null;
+		try {
+			ret = sdfToDate.parse(readLine[2]+"."+readLine[1]+"."+readLine[0]+" "+readLine2[0]+":"+readLine2[1]+":"+readLine2[2]);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return ret;
 	}
 
 }

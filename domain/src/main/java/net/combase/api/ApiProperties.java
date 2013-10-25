@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import net.combase.api.service.ApiUtil;
 
@@ -22,11 +23,13 @@ public class ApiProperties {
 	private String cashout;
 	private int timeOut;
 	private String customerGroupNumber;
+	private static final Pattern IP_PATTERN = Pattern.compile("^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}");
 
 	protected ApiProperties() {
 		try {
 
-			InputStream file = new FileInputStream(new File("butler.properties"));
+			InputStream file = new FileInputStream(
+					new File("butler.properties"));
 			Properties props = new Properties();
 			props.load(file);
 			appId = props.getProperty("appId");
@@ -41,13 +44,14 @@ public class ApiProperties {
 			cashin = props.getProperty("cashin");
 			cashout = props.getProperty("cashout");
 
-			if (protocol == null || !protocol.equals("http") && !protocol.equals("https"))
+			if (protocol == null || !protocol.equals("http")
+					&& !protocol.equals("https"))
 				protocol = "https";
 			StringBuilder sb = new StringBuilder();
 			sb.append(protocol);
 			sb.append("://");
-			if (!cloudUrl.startsWith("www."))
-				sb.append("www.");
+//			if (!cloudUrl.startsWith("www.") && !isValidIP(cloudUrl))
+//				sb.append("www.");
 			sb.append(cloudUrl);
 			if (!cloudUrl.endsWith("/"))
 				sb.append("/");
@@ -58,12 +62,18 @@ public class ApiProperties {
 		} catch (Exception e) {
 			System.out.println("error" + e);
 		}
+
+	}
+
+	public static boolean isValidIP(String ip) {
+		boolean matches = IP_PATTERN.matcher(ip).matches();
+		return matches;
 	}
 
 	/**
 	 * diese Methode fordert das Token-Authentifizierungselement vom Cloudserver
 	 * an und speichert es in die token.txt
-	 *
+	 * 
 	 * @throws IOException
 	 */
 
@@ -71,7 +81,8 @@ public class ApiProperties {
 		String token = null;
 
 		final String url = get().getUrl() + "/auth/"
-				+ ApiProperties.get().getAppId() + "/" + ApiProperties.get().getAppSecret() + "/"
+				+ ApiProperties.get().getAppId() + "/"
+				+ ApiProperties.get().getAppSecret() + "/"
 				+ ApiProperties.get().getApiAccesKey();
 		token = ApiUtil.fetchData(url, processTrayIcon).toString();
 		if (token != null) {

@@ -10,6 +10,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 
+import net.combase.api.domain.Supplier;
+import net.combase.api.service.SupplierApiService;
+
 public class LekkerlandMenu extends Menu {
 
 	private static final long serialVersionUID = 3147898780501005074L;
@@ -20,7 +23,8 @@ public class LekkerlandMenu extends Menu {
 
 	private String MESSAGE_HEADER = "Lekkerland Handler";
 	private String dispatchNotificationsFolder;
-	private final DispatchNotification dispatchNotification;
+	private final DispatchNotificationFrame dispatchNotification;
+	private Supplier supplier;
 
 	public LekkerlandMenu(final TrayIcon trayIcon, String label) {
 		super(label);
@@ -33,11 +37,14 @@ public class LekkerlandMenu extends Menu {
 			props.load(file);
 			dispatchNotificationsFolder = props
 					.getProperty("dispatchNotifications");
+			final Long supplierNumber = Long.valueOf(props
+					.getProperty("supplierNumber"));
+			supplier = SupplierApiService.getByNumber(supplierNumber);
 		} catch (Exception e) {
 			System.out.println("error" + e);
 		}
 
-		dispatchNotification = new DispatchNotification(trayIcon,
+		dispatchNotification = new DispatchNotificationFrame(trayIcon, supplier,
 				dispatchNotificationsFolder);
 		ActionListener listener = new ActionListener() {
 
